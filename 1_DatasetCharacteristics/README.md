@@ -4,16 +4,16 @@
 
 ## Dataset Information
 
-### Dataset Source
-- **Dataset Link:** 
-- **Dataset Owner/Contact:** 
-- **[RIPE Atlas Daily Measurement](https://data-store.ripe.net/datasets/atlas-daily-dumps/2026-04-29/)** [Explanation of Data Fields](https://atlas.ripe.net/docs/apis/measurement-result-format/version-5000#version-5000-ping-v6-ping)
-  - [GeoIP Lite2 databases](https://www.maxmind.com/en/home)
-- [A copy of the Dataset for easier asccess](https://drive.google.com/drive/folders/1H3eyh8CgYErbDcPGOH9lEslPub40fL9V?usp=sharing)
+### Data Source
+1.**[RIPE Atlas Daily Measurement](https://data-store.ripe.net/datasets/atlas-daily-dumps/2026-04-29/)**
+	[Explanation of Data Fields](https://atlas.ripe.net/docs/apis/measurement-result-format/version-5000#version-5000-ping-v6-ping)
+2. [GeoIP Lite2 databases](https://www.maxmind.com/en/home)
+3. [Google Drive copy of the Dataset for easier asccess](https://drive.google.com/drive/folders/1H3eyh8CgYErbDcPGOH9lEslPub40fL9V?usp=sharing)
 
 
-************************************* (**Work in Progress**) ***************************************
-
+🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
+  *WORK IN PROGRESS*
+🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
 
 ### Dataset Characteristics
 - **Number of Observations:** [Total number of samples/records in your dataset. For time series data, also specify the temporal resolution (e.g., daily, hourly, etc.)]
