@@ -7,6 +7,9 @@
 ### Dataset Source
 - **Dataset Link:** [Provide a direct link to your dataset. If the dataset is private, explain the reason and provide contact information for the dataset owner]
 - **Dataset Owner/Contact:** [If applicable, provide contact information for private datasets]
+- **[RIPE Atlas Daily Measurement](https://data-store.ripe.net/datasets/atlas-daily-dumps/2026-04-29/)** [Explanation of Data Fields](https://atlas.ripe.net/docs/apis/measurement-result-format/version-5000#version-5000-ping-v6-ping)
+  - [GeoIP Lite2 databases](https://www.maxmind.com/en/home)
+- [A copy of the Dataset for easier asccess](https://drive.google.com/drive/folders/1H3eyh8CgYErbDcPGOH9lEslPub40fL9V?usp=sharing)
 
 ### Dataset Characteristics
 - **Number of Observations:** [Total number of samples/records in your dataset. For time series data, also specify the temporal resolution (e.g., daily, hourly, etc.)]
