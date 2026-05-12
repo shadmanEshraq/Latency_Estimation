@@ -8,7 +8,7 @@
 
 This project builds a regression pipeline to predict global internet **Round-Trip Time (RTT)**. By streaming and decompressing massive bz2 telemetry dumps from RIPE Atlas, we will establish a **baseline model** for estimating the physical propagation delay of the internet. Our approach uses a filtered dataset of over 33 million successful measurements to ensure the model learns the structure of the internet connection rather than transient operational noise.
 
-**If the baseline model proves successful**, we could then try to solve the problem of "Network Tomography" by predicting latency between nodes where no direct measurement exists.
+**If the baseline model proves to be satisfactory**, we could then try to solve the problem of "Network Tomography" by predicting latency between nodes where no direct measurement exists.
 
 ### Task Type
 
