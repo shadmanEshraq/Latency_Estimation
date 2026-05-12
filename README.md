@@ -1,4 +1,4 @@
-# Global Latency Oracle: RIPE Atlas Baseline MVP]
+# Global Latency Oracle: RIPE Atlas Baseline MVP
 
 ## Repository Link
 
@@ -6,17 +6,17 @@
 
 ## Description
 
-[Short project description here. Briefly summarize the problem you are trying to solve and the approach you're taking.]
+This project builds a regression pipeline to predict global internet **Round-Trip Time (RTT)**. By streaming and decompressing massive bz2 telemetry dumps from RIPE Atlas, we establish a clean baseline for the physical propagation delay of the internet. We try to solve the problem of "Network Tomography" by predicting latency between nodes where no direct measurement exists. Our approach uses a filtered dataset of over 33 million successful measurements to ensure the model learns the structural physics of the internet rather than transient operational noise.
 
 ### Task Type
 
-[Image Classification / Chatbot / Regression / Clustering / Other]
+[Regression]
 
 ### Results Summary
 
 #### Best Model Performance
-- **Best Model:** [Name and type of the best-performing model"]
-- **Evaluation Metric:** [Primary metric used, e.g., Accuracy, F1-Score, MSE, MAE]
+- **Best Model:** ["In Progress"]
+- **Evaluation Metric:** [Mean Absolute Error (MAE)]
 - **Final Performance:** [Best score achieved, e.g., 95% accuracy, F1-score of 0.87, MSE of 0.12]
 
 #### Model Comparison
