@@ -1,4 +1,4 @@
-# [Your Project Title Here]
+# [Global Latency Oracle: RIPE Atlas Baseline MVP]
 
 ## Repository Link
 
