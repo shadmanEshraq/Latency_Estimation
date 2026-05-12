@@ -2,9 +2,7 @@
 
 Approaches or solutions that have been tried before on similar projects.
 
-**Summary of Each Work**:
-
-- **Data Sources**: [RIPE Atlas Daily Measurement]
+## Data Sources: [RIPE Atlas Daily Measurement]
 
   - **[RIPE Atlas Daily Measurement](https://data-store.ripe.net/datasets/atlas-daily-dumps/2026-04-29/)** [Explanation of Data Fields](https://atlas.ripe.net/docs/apis/measurement-result-format/version-5000#version-5000-ping-v6-ping)
   - [GeoIP Lite2 databases](https://www.maxmind.com/en/home)
@@ -13,8 +11,10 @@ Approaches or solutions that have been tried before on similar projects.
   - **Outcomes**:
   - **Relation to the Project**:
 
-- **Adaptive Network Latency Prediction From Noisy Measurements**:
-- R. Tripathi and K. Rajawat, "Adaptive Network Latency Prediction From Noisy Measurements," in IEEE Transactions on Network and Service Management, vol. 18, no. 1, pp. 807-821, March 2021, doi: 10.1109/TNSM.2021.3051736.
+## Related Literature
+
+- **Adaptive Network Latency Prediction From Noisy Measurements**
+	- R. Tripathi and K. Rajawat, "Adaptive Network Latency Prediction From Noisy Measurements," in IEEE Transactions on Network and Service Management, vol. 18, no. 1, pp. 807-821, March 2021, doi: 10.1109/TNSM.2021.3051736.
 
   - **[Link](https://ieeexplore.ieee.org/document/9324791)**
   - **Objective**:
@@ -31,7 +31,4 @@ Approaches or solutions that have been tried before on similar projects.
   - **Outcomes**:
   - **Relation to the Project**:
  
-
-╔════════════════════════════╗
-║   WORK IN PROGRESS ...    ║
-╚════════════════════════════╝
+🚧 WORK IN PROGRESS 🚧
