@@ -3,8 +3,9 @@
 Approaches or solutions that have been tried before on similar projects.
 
 ## Data Sources:
-1. **[RIPE Atlas Daily Measurement](https://data-store.ripe.net/datasets/atlas-daily-dumps/2026-04-29/)**	[Explanation of Data Fields](https://atlas.ripe.net/docs/apis/measurement-result-format/version-5000#version-5000-ping-v6-ping)
-2. **[GeoIP Lite2 databases](https://www.maxmind.com/en/home)**
+1. **[RIPE Atlas Daily Measurement](https://data-store.ripe.net/datasets/atlas-daily-dumps/2026-04-29/)**
+	[Explanation of Data Fields](https://atlas.ripe.net/docs/apis/measurement-result-format/version-5000#version-5000-ping-v6-ping)
+3. **[GeoIP Lite2 databases](https://www.maxmind.com/en/home)**
 
 ## Related Literature
 
