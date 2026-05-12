@@ -17,18 +17,18 @@ This project builds a regression pipeline to predict global internet **Round-Tri
 #### Best Model Performance
 - **Best Model:** ["In Progress"]
 - **Evaluation Metric:** [Mean Absolute Error (MAE)]
-- **Final Performance:** [Best score achieved, e.g., 95% accuracy, F1-score of 0.87, MSE of 0.12]
+- **Final Performance:** ["In Progress"]
 
 #### Model Comparison
-- **Baseline Performance:** [Baseline model performance for comparison]
-- **Improvement Over Baseline:** [Quantitative improvement, e.g., "+12% accuracy", "25% reduction in MSE"]
-- **Best Alternative Model:** [Second-best model and its performance]
+- **Baseline Performance:** ["In Progress"]
+- **Improvement Over Baseline:** ["In Progress"]
+- **Best Alternative Model:** ["In Progress"]
 
 #### Key Insights
-- **Most Important Features:** [Top 3-5 features that drive model performance]
-- **Model Strengths:** [What the model does well]
-- **Model Limitations:** [Known limitations and failure cases]
-- **Business Impact:** [Practical implications of the model performance]
+- **Most Important Features:** ["In Progress"]
+- **Model Strengths:** ["In Progress"]
+- **Model Limitations:** ["In Progress"]
+- **Business Impact:** ["In Progress"]
 
 ## Documentation
 
