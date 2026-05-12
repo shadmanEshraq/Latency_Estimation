@@ -7,6 +7,7 @@ Approaches or solutions that have been tried before on similar projects.
 - **Data Source**: [RIPE Atlas Daily Measurement]
 
   - **[Link](https://data-store.ripe.net/datasets/atlas-daily-dumps/2026-04-29/)**
+  - **[Explanation of Data Fields](https://atlas.ripe.net/docs/apis/measurement-result-format/version-5000#version-5000-ping-v6-ping)**
   - **Objective**:
   - **Methods**:
   - **Outcomes**:
