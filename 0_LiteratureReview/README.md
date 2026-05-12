@@ -31,4 +31,4 @@ Approaches or solutions that have been tried before on similar projects.
   - **Outcomes**:
   - **Relation to the Project**:
  
-🚧 WORK IN PROGRESS 🚧
+🚧 *WORK IN PROGRESS*... 🚧
