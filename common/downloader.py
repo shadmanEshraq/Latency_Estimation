@@ -131,4 +131,4 @@ class RipeAtlasDownloader:
             # dst never replied — fall back to total hops
             return len(row["result"])
         except:
-            return 0
+            return len(row["result"])
