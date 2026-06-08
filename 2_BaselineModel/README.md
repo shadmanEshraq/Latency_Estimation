@@ -1,6 +1,6 @@
 # Baseline Model
 
-**[Notebook](baseline_model.ipynb)**
+**[Notebook](atlas-rtt.ipynb)**
 
 ## Baseline Model Results
 
