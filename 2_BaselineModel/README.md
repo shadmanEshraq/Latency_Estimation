@@ -17,11 +17,11 @@
 So this a good candidate for a *Baseline Model*
 
 ### Model Performance
-- **Evaluation Metric:** RMSE, MAE, MAPE, R²
+- **Evaluation Metric:** RMSE, MAE, R²
 - **Performance Score:**
 
-  | Metric |     Value | Interpretation                                                                        |
-| ------ | --------: | ------------------------------------------------------------------------------------- |
+| Metric |     Value | Interpretation                                                                        |
+| ------ | -------- | ------------------------------------------------------------------------------------- |
 | MAE    | 12.813 ms | On average, predictions differ from actual RTT by about 12.8 ms.                      |
 | RMSE   | 22.954 ms | Typical prediction error is about 23.0 ms, with larger errors penalized more heavily. |
 | R²     |    0.9393 | The model explains approximately 93.93% of the variance in RTT values.                |
