@@ -253,7 +253,7 @@ class EDAPipeline:
         """Plots distribution plots for each numerical column."""
 
         for col in self.numeric_cols:
-            plt.figure(figsize=(16, 9))
+            plt.figure(figsize=(18, 6))
             fig, ax = plt.subplots()
 
             sns.histplot(
@@ -280,7 +280,7 @@ class EDAPipeline:
         """Plots boxplots for each numerical column."""
 
         for col in self.numeric_cols:
-            plt.figure(figsize=(16, 9))
+            plt.figure(figsize=(18, 6))
             fig, ax = plt.subplots()
 
             sns.boxplot(x=self.df[col], ax=ax)
@@ -306,7 +306,7 @@ class EDAPipeline:
             if col == self.target:
                 continue
 
-            plt.figure(figsize=(16, 9))
+            plt.figure(figsize=(18, 6))
             fig, ax = plt.subplots()
 
             sns.scatterplot(data=self.df, x=col, y=self.target, ax=ax)
