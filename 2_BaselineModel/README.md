@@ -42,4 +42,4 @@ For RTT estimation projects, **MAE** and **RMSE** are typically the two most inf
 ## Next Steps
 This baseline model serves as a reference point for evaluating more sophisticated models in the [Model Definition and Evaluation](../3_Model/README.md) phase.
 
-> As of **09-July-26** we are working on more realistic group-based split on the dataset. We will train the next model on the updated spilt.
+> As of **09-Jun-26** we are working on more realistic group-based split on the dataset. We will train the next model on the updated spilt.
