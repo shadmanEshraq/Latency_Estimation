@@ -1,6 +1,7 @@
 # Dataset Characteristics
 
 **[ETL Notebook](exploratory_data_analysis.ipynb)**
+
 **[EDA Notebook](EDA_updated.ipynb)**
 
 ## Dataset Information
@@ -78,7 +79,7 @@ Here is table detailing the 41 features of our final `2026-05-19-lat-est.parquet
 
 ## Exploratory Data Analysis
 
-The exploratory data analysis is conducted in the [EDA Notebook](EDA_updated.ipynb)notebook, which includes:
+The exploratory data analysis is conducted in the [EDA Notebook](EDA_updated.ipynb), which includes:
 
 - Data loading and initial inspection
 - Statistical summaries and distributions
