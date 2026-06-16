@@ -35,10 +35,39 @@ Example usage:
 
 """
 
+from pprint import pprint
+
 import pandas as pd
 import numpy as np
+
+# -------------- Plotting libraries  & in depth settings--------------
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+# a rc param dict to set the default figure size and other parameters for seaborn plots
+plot_params = {
+    "figure.figsize": (21, 9),  # Set default figure size for all plots (Ultrawide)
+    "figure.dpi": 150,
+    "axes.titlesize": 16,
+    "axes.titleweight": "bold",
+    "axes.labelsize": 14,
+    "axes.labelweight": "bold",
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 10,
+    "legend.shadow": True,
+    "grid.alpha": 0.25,  # Set grid transparency for better visibility
+    "savefig.bbox": "tight",  # Ensure tight layout when saving figures
+}
+
+
+sns.set_theme(
+    style="whitegrid",
+    context="notebook",
+    font="sans-serif",
+    font_scale=1.0,
+    rc=plot_params,
+)
 
 # sns.set_theme(style="whitegrid", context="talk", font_scale=1)
 # sns.set_theme(style="whitegrid", context="talk", font_scale=1.2)
@@ -78,23 +107,33 @@ class EDAPipeline:
     def overview(self):
         """Prints a basic overview of the dataset, including shape, columns, data types, missing values, and duplicates."""
 
+        print("+" * 60)
+        print(" " * 20 + " EDA Script Started !" + " " * 20)
+        print("+" * 60)
+
         print("=" * 60)
         print("DATASET OVERVIEW")
         print("=" * 60)
 
         print(f"Shape: {self.df.shape}")
+        print(f"Number of rows: {self.df.shape[0]}")
+        print(f"Number of columns: {self.df.shape[1]}")
 
         print("\nColumns:")
-        print(self.df.columns.tolist())
+        print("-" * 30)
+        pprint(self.df.columns.tolist())
 
         print("\nData Types:")
-        print(self.df.dtypes)
+        print("#" + "-" * 30 + " Check for Typecast Issues !" + "-" * 30 + "#\n")
+        pprint(self.df.dtypes)
 
         print("\nMissing Values:")
-        print(self.df.isnull().sum().sort_values(ascending=False))
+        print("-" * 30)
+        pprint(self.df.isnull().sum().sort_values(ascending=False))
 
         print("\nDuplicate Rows:")
-        print(self.df.duplicated().sum())
+        print("-" * 30)
+        pprint(self.df.duplicated().sum())
 
     # =========================================================
     # MEMORY USAGE
@@ -122,7 +161,7 @@ class EDAPipeline:
         print("NUMERICAL SUMMARY")
         print("=" * 60)
 
-        print(self.df[self.numeric_cols].describe().T)
+        pprint(self.df[self.numeric_cols].describe().T)
 
     # =========================================================
     # MISSING VALUE REPORT
@@ -134,11 +173,11 @@ class EDAPipeline:
         missing = pd.DataFrame(
             {
                 "missing_count": self.df.isnull().sum(),
-                "missing_percent": self.df.isnull().mean() * 100,
+                "missing_percent (%)": self.df.isnull().mean() * 100,
             }
         )
 
-        missing = missing.sort_values(by="missing_percent", ascending=False)
+        missing = missing.sort_values(by="missing_percent (%)", ascending=False)
 
         return missing
 
@@ -147,14 +186,20 @@ class EDAPipeline:
     # =========================================================
 
     def cardinality_report(self):
-        """Prints a report of unique values and cardinality percentage for each categorical column."""
+        """Prints a report of unique values and cardinality percentage for each categorical column.
+        Also gives suggestion to proper typecast to reduce memory usage if cardinality is low."""
 
         report = {}
 
         for col in self.categorical_cols:
+            # Calculate unique ratio - less than 10% unique values is often a good candidate for 'category' typecast
+            unique_ratio = self.df[col].nunique() / len(self.df)
             report[col] = {
                 "unique_values": self.df[col].nunique(),
-                "cardinality_percent": self.df[col].nunique() / len(self.df) * 100,
+                "cardinality_percent (%)": unique_ratio * 100,
+                "suggestion": "consider typecast to 'category'"
+                if unique_ratio < 0.1
+                else "High cardinality - object/ other encoding method",
             }
 
         return pd.DataFrame(report).T.sort_values(by="unique_values", ascending=False)
@@ -183,7 +228,7 @@ class EDAPipeline:
 
         return pd.DataFrame.from_dict(
             outlier_report, orient="index", columns=["outlier_count"]
-        )
+        ).sort_values(by="outlier_count", ascending=False)
 
     # =========================================================
     # SKEWNESS REPORT
@@ -253,7 +298,7 @@ class EDAPipeline:
         """Plots distribution plots for each numerical column."""
 
         for col in self.numeric_cols:
-            plt.figure(figsize=(18, 6))
+           
             fig, ax = plt.subplots()
 
             sns.histplot(
@@ -280,7 +325,7 @@ class EDAPipeline:
         """Plots boxplots for each numerical column."""
 
         for col in self.numeric_cols:
-            plt.figure(figsize=(18, 6))
+            
             fig, ax = plt.subplots()
 
             sns.boxplot(x=self.df[col], ax=ax)
@@ -306,7 +351,7 @@ class EDAPipeline:
             if col == self.target:
                 continue
 
-            plt.figure(figsize=(18, 6))
+           
             fig, ax = plt.subplots()
 
             sns.scatterplot(data=self.df, x=col, y=self.target, ax=ax)
@@ -331,60 +376,64 @@ class EDAPipeline:
         self.summary_stats()
 
         print("\n")
-        print("=" * 60)
+        print("=" * 80)
         print("MISSING VALUE REPORT")
-        print("=" * 60)
+        print("=" * 80)
         print(self.missing_report())
 
         print("\n")
-        print("=" * 60)
+        print("=" * 80)
         print("CARDINALITY REPORT")
-        print("=" * 60)
+        print("=" * 80)
         print(self.cardinality_report())
 
         print("\n")
-        print("=" * 60)
+        print("=" * 80)
         print("OUTLIER REPORT")
-        print("=" * 60)
+        print("=" * 80)
         print(self.detect_outliers_iqr())
 
         print("\n")
-        print("=" * 60)
+        print("=" * 80)
         print("SKEWNESS REPORT")
-        print("=" * 60)
+        print("=" * 80)
         print(self.skewness_report())
 
         print("\n")
-        print("=" * 60)
+        print("=" * 80)
         print("LOG TRANSFORM CANDIDATES")
-        print("=" * 60)
+        print("=" * 80)
         print(self.log_transform_candidates())
 
+        print("+" * 80)
+        print(" " * 20 + " Printing plots..." + " " * 20)
+        print("+" * 80)
+
         print("\n")
-        print("=" * 60)
-        print("Showing correlation heatmap...")
-        print("=" * 60)
+        print("=" * 80)
+        print(" "*20 + "Showing correlation heatmap..." + " "*20 )
+        print("=" * 80)
         self.correlation_heatmap()
 
         print("\n")
-        print("=" * 60)
-        print("Showing distribution plots...")
-        print("=" * 60)
+        print("=" * 80)
+        print(" "*20 + "Showing distribution plots..."+ " "*20 )
+        print("=" * 80)
         self.distribution_plots()
 
         print("\n")
-        print("=" * 60)
-        print("Showing boxplots...")
-        print("=" * 60)
+        print("-" * 80)
+        print(" "*20 + "Showing boxplots..."+ " "*20 )
+        print("-" * 80)
         self.boxplots()
 
         print("\n")
-        print("=" * 60)
-        print("Showing target vs feature relationships...")
-        print("=" * 60)
+        print("=" * 80)
+        print(" "*20 +"Showing target vs feature relationships..." + " "*20 )
+        print("=" * 80)
         self.target_relationships()
 
         print("\n")
-        print("=" * 60)
-        print("Task complete! All EDA steps have been executed.")
-        print("=" * 60)
+        print("+" * 80)
+        print(" "*20 + "Task complete! All EDA steps have been executed." + " "*20)
+        print("+" * 80)
