@@ -17,17 +17,19 @@
 🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
 
 ### Dataset Characteristics
-- **Number of Observations:** [Total number of samples/records in your dataset. For time series data, also specify the temporal resolution (e.g., daily, hourly, etc.)]
-- **Number of Features:** [Total number of features in your dataset]
+- **Number of Observations:** 1116767
+- **Number of Features:** 41
 
 ### Target Variable/Label
-- **Label Name:** [Name of the target variable/column]
-- **Label Type:** [Classification/Regression/Clustering/Other]
-- **Label Description:** [What does this label represent? What is the prediction task?]
-- **Label Values:** [For classification: list of classes and their meanings. For regression: range of values. For other tasks: describe the label structure]
-- **Label Distribution:** [Brief description of class balance for classification or value distribution for regression]
+- **Label Name:** avg
+- **Label Type:** [Regression]
+- **Label Description:** Average round-trip time (RTT) across all replies in milliseconds. 
+- **Label Values:** [For regression: range of values.]
+- **Label Distribution:** [Brief description of value distribution for regression]
 
 ### Feature Description
+
+Here is table detailing the 41 features of our final `2026-05-19-lat-est.parquet` dataset. This file is renamed as `df_original.parquet` and saved inside the dataset folder.
 
 | Feature Name | Data Type | Description |
 | --- | --- | --- |
