@@ -39,6 +39,7 @@ from pprint import pprint
 
 import pandas as pd
 import numpy as np
+from scipy.stats import skew
 
 # -------------- Plotting libraries  & in depth settings--------------
 import matplotlib.pyplot as plt
@@ -74,8 +75,23 @@ sns.set_theme(
 # sns.set_theme(style="ticks", context="notebook", font_scale=1.2)
 # sns.set_theme(style="white", context="poster", font_scale=1)
 
-
-from scipy.stats import skew
+# ---------------------- Icons --------------------------------
+# EDA UI Icons
+ICON_START = "🚀"
+ICON_ALERT = "🚨"
+ICON_DONE  = "✅"
+ICON_DATA_CLEANING = "🧹"
+ICON_DATASET_OVERVIEW = "📋"
+ICON_NUMERICAL_SUMMARY = "🔢"
+ICON_CATEGORICAL_OVERVIEW = "🔠"
+ICON_BAR_CHART = "📊"
+ICON_LINE_CHART = "📈"
+ICON_CORRELATION_MATRIX = "🌡️"
+ICON_FEATURE_ENGINEERING = "🛠️"
+ICON_TRAIN_TEST_SPLIT = "✂️"
+ICON_KEY_INSIGHTS = "💡"
+ICON_EXPORT_DATA = "💾"
+# ------------------------------------------------------------
 
 # Import plotting style (done on the notebook level to avoid issues with imports in the class)
 # import plot_config
@@ -108,7 +124,7 @@ class EDAPipeline:
         """Prints a basic overview of the dataset, including shape, columns, data types, missing values, and duplicates."""
 
         print("+" * 60)
-        print(" " * 20 + " EDA Script Started !" + " " * 20)
+        print(" " * 20 + f" {ICON_START} EDA Script Started !" + " " * 20)
         print("+" * 60)
 
         print("=" * 60)
@@ -124,14 +140,14 @@ class EDAPipeline:
         pprint(self.df.columns.tolist())
 
         print("\nData Types:")
-        print("#" + "-" * 30 + " Check for Typecast Issues !" + "-" * 30 + "#\n")
+        print("#" + "-" * 30 + f" {ICON_ALERT} Check for Typecast Issues ! {ICON_ALERT}" + "-" * 30 + "#\n")
         pprint(self.df.dtypes)
 
-        print("\nMissing Values:")
+        print("\n" + ICON_ALERT + " Missing Values:")
         print("-" * 30)
         pprint(self.df.isnull().sum().sort_values(ascending=False))
 
-        print("\nDuplicate Rows:")
+        print("\n" + ICON_ALERT + " Duplicate Rows:")
         print("-" * 30)
         pprint(self.df.duplicated().sum())
 
@@ -158,7 +174,7 @@ class EDAPipeline:
         """Prints summary statistics for numerical columns."""
 
         print("=" * 60)
-        print("NUMERICAL SUMMARY")
+        print(f" {ICON_NUMERICAL_SUMMARY} NUMERICAL SUMMARY {ICON_NUMERICAL_SUMMARY} ")
         print("=" * 60)
 
         pprint(self.df[self.numeric_cols].describe().T)
@@ -193,13 +209,16 @@ class EDAPipeline:
 
         for col in self.categorical_cols:
             # Calculate unique ratio - less than 10% unique values is often a good candidate for 'category' typecast
-            unique_ratio = self.df[col].nunique() / len(self.df)
+            unique_count = self.df[col].nunique()
+            unique_ratio = unique_count / len(self.df)
+            
             report[col] = {
-                "unique_values": self.df[col].nunique(),
+                "unique_values": unique_count,
                 "cardinality_percent (%)": unique_ratio * 100,
-                "suggestion": "consider typecast to 'category'"
-                if unique_ratio < 0.1
-                else "High cardinality - object/ other encoding method",
+                "suggestion": 
+                 "bool flag/ consider bool typecast" if unique_count <= 2 else 
+                 ("consider typecast to 'category'" if unique_ratio < 0.1 else "High cardinality - object/ other encoding method"),
+                 
             }
 
         return pd.DataFrame(report).T.sort_values(by="unique_values", ascending=False)
@@ -334,6 +353,10 @@ class EDAPipeline:
             ax.set_xlabel(col)
             plt.tight_layout()
 
+            # need to write logic for showing key statistics like median, quartiles, and whiskers 
+            
+
+
             plt.show()
 
     # =========================================================
@@ -377,31 +400,31 @@ class EDAPipeline:
 
         print("\n")
         print("=" * 80)
-        print("MISSING VALUE REPORT")
+        print(f"{ICON_ALERT} MISSING VALUE REPORT {ICON_ALERT}")
         print("=" * 80)
         print(self.missing_report())
 
         print("\n")
         print("=" * 80)
-        print("CARDINALITY REPORT")
+        print(f"{ICON_CATEGORICAL_OVERVIEW} CARDINALITY REPORT {ICON_CATEGORICAL_OVERVIEW}")
         print("=" * 80)
         print(self.cardinality_report())
 
         print("\n")
         print("=" * 80)
-        print("OUTLIER REPORT")
+        print(f"{ICON_KEY_INSIGHTS} OUTLIER REPORT {ICON_KEY_INSIGHTS}")
         print("=" * 80)
         print(self.detect_outliers_iqr())
 
         print("\n")
         print("=" * 80)
-        print("SKEWNESS REPORT")
+        print(f"{ICON_KEY_INSIGHTS} SKEWNESS REPORT {ICON_KEY_INSIGHTS}")
         print("=" * 80)
         print(self.skewness_report())
 
         print("\n")
         print("=" * 80)
-        print("LOG TRANSFORM CANDIDATES")
+        print(f"{ICON_KEY_INSIGHTS} LOG TRANSFORM CANDIDATES {ICON_KEY_INSIGHTS}")
         print("=" * 80)
         print(self.log_transform_candidates())
 
@@ -411,29 +434,29 @@ class EDAPipeline:
 
         print("\n")
         print("=" * 80)
-        print(" "*20 + "Showing correlation heatmap..." + " "*20 )
+        print(" "*20 + f"{ICON_CORRELATION_MATRIX} Showing correlation heatmap... " + " "*20 )
         print("=" * 80)
         self.correlation_heatmap()
 
         print("\n")
         print("=" * 80)
-        print(" "*20 + "Showing distribution plots..."+ " "*20 )
+        print(" "*20 + f"{ICON_BAR_CHART} Showing distribution plots... " + " "*20 )
         print("=" * 80)
         self.distribution_plots()
 
         print("\n")
         print("-" * 80)
-        print(" "*20 + "Showing boxplots..."+ " "*20 )
+        print(" "*20 + f"{ICON_BAR_CHART} Showing boxplots... " + " "*20 )
         print("-" * 80)
         self.boxplots()
 
         print("\n")
         print("=" * 80)
-        print(" "*20 +"Showing target vs feature relationships..." + " "*20 )
+        print(" "*20 + f"{ICON_LINE_CHART} Showing target vs feature relationships... " + " "*20 )
         print("=" * 80)
         self.target_relationships()
 
         print("\n")
         print("+" * 80)
-        print(" "*20 + "Task complete! All EDA steps have been executed." + " "*20)
+        print(" "*20 + f"{ICON_DONE} Task complete! All EDA steps have been executed." + " "*20)
         print("+" * 80)
