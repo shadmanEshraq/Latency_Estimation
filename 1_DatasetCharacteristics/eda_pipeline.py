@@ -47,7 +47,7 @@ import seaborn as sns
 
 # a rc param dict to set the default figure size and other parameters for seaborn plots
 plot_params = {
-    "figure.figsize": (21, 9),  # Set default figure size for all plots (Ultrawide)
+    "figure.figsize": (15, 6),  # Set default figure size for all plots (Ultrawide)
     "figure.dpi": 150,
     "axes.titlesize": 16,
     "axes.titleweight": "bold",
@@ -425,6 +425,10 @@ class EDAPipeline:
         print("\n")
         print("=" * 80)
         print(f"{ICON_KEY_INSIGHTS} LOG TRANSFORM CANDIDATES {ICON_KEY_INSIGHTS}")
+        print("Benefitial for :\n")
+        print("- Linear Regression, Ridge, Lasso, & ElasticNet ;\n " \
+        "- Logistic Regression & Support Vector Machines (SVM),\n " \
+        "- Neural Networks, KNN & K-Means")
         print("=" * 80)
         print(self.log_transform_candidates())
 
