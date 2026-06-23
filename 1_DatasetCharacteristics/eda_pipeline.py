@@ -49,13 +49,13 @@ import seaborn as sns
 plot_params = {
     "figure.figsize": (15, 6),  # Set default figure size for all plots (Ultrawide)
     "figure.dpi": 150,
-    "axes.titlesize": 16,
+    "axes.titlesize": 18,
     "axes.titleweight": "bold",
-    "axes.labelsize": 14,
+    "axes.labelsize": 16,
     "axes.labelweight": "bold",
-    "xtick.labelsize": 12,
-    "ytick.labelsize": 12,
-    "legend.fontsize": 10,
+    "xtick.labelsize": 14,
+    "ytick.labelsize": 14,
+    "legend.fontsize": 12,
     "legend.shadow": True,
     "grid.alpha": 0.25,  # Set grid transparency for better visibility
     "savefig.bbox": "tight",  # Ensure tight layout when saving figures
@@ -79,7 +79,7 @@ sns.set_theme(
 # EDA UI Icons
 ICON_START = "🚀"
 ICON_ALERT = "🚨"
-ICON_DONE  = "✅"
+ICON_DONE = "✅"
 ICON_DATA_CLEANING = "🧹"
 ICON_DATASET_OVERVIEW = "📋"
 ICON_NUMERICAL_SUMMARY = "🔢"
@@ -123,9 +123,13 @@ class EDAPipeline:
     def overview(self):
         """Prints a basic overview of the dataset, including shape, columns, data types, missing values, and duplicates."""
 
-        print("+" * 60)
-        print(" " * 20 + f" {ICON_START} EDA Script Started !" + " " * 20)
-        print("+" * 60)
+        print("+" * 80)
+        print(
+            " " * 20
+            + f" {ICON_START} EDA Script for Initial Analysis Started !"
+            + " " * 20
+        )
+        print("+" * 80)
 
         print("=" * 60)
         print("DATASET OVERVIEW")
@@ -140,7 +144,13 @@ class EDAPipeline:
         pprint(self.df.columns.tolist())
 
         print("\nData Types:")
-        print("#" + "-" * 30 + f" {ICON_ALERT} Check for Typecast Issues ! {ICON_ALERT}" + "-" * 30 + "#\n")
+        print(
+            "#"
+            + "-" * 30
+            + f" {ICON_ALERT} Check for Typecast Issues ! {ICON_ALERT}"
+            + "-" * 30
+            + "#\n"
+        )
         pprint(self.df.dtypes)
 
         print("\n" + ICON_ALERT + " Missing Values:")
@@ -202,23 +212,24 @@ class EDAPipeline:
     # =========================================================
 
     def cardinality_report(self):
-        """Prints a report of unique values and cardinality percentage for each categorical column.
-        Also gives suggestion to proper typecast to reduce memory usage if cardinality is low."""
-
+        """Prints unique values and offers typecasting hints based on ratio."""
         report = {}
 
         for col in self.categorical_cols:
-            # Calculate unique ratio - less than 10% unique values is often a good candidate for 'category' typecast
             unique_count = self.df[col].nunique()
             unique_ratio = unique_count / len(self.df)
-            
+
+            if unique_count <= 2:
+                suggestion = "bool flag, consider bool typecast"
+            elif unique_ratio < 0.1:
+                suggestion = "consider typecast to category"
+            else:
+                suggestion = "High cardinality, object or alternative encoding method"
+
             report[col] = {
                 "unique_values": unique_count,
                 "cardinality_percent (%)": unique_ratio * 100,
-                "suggestion": 
-                 "bool flag/ consider bool typecast" if unique_count <= 2 else 
-                 ("consider typecast to 'category'" if unique_ratio < 0.1 else "High cardinality - object/ other encoding method"),
-                 
+                "suggestion": suggestion,
             }
 
         return pd.DataFrame(report).T.sort_values(by="unique_values", ascending=False)
@@ -314,10 +325,21 @@ class EDAPipeline:
     # =========================================================
 
     def distribution_plots(self):
-        """Plots distribution plots for each numerical column."""
+        """Plots distribution plots for high cardinality *(> 10) numerical columns."""
 
-        for col in self.numeric_cols:
-           
+        # we use a cardinality logic to find suitable columns for dist plots
+        suitable_cols = [
+            col for col in self.numeric_cols if self.df[col].nunique() > 10
+        ]
+
+        # also include categorical cols with the same logic
+        # suitable_cols.extend(
+        #    [col for col in self.categorical_cols if self.df[col].nunique() > 10]
+        # )
+
+        pprint(f"Showing Distribution Plots for : {', '.join(suitable_cols)}")
+
+        for col in suitable_cols:
             fig, ax = plt.subplots()
 
             sns.histplot(
@@ -337,26 +359,148 @@ class EDAPipeline:
             plt.show()
 
     # =========================================================
+    # COUNTPLOTS
+    # =========================================================
+    def countplots(self):
+        """Plots countplots for each categorical column."""
+
+        # Use cardinality logic to find suitable columns
+        suitable_cols = [
+            col for col in self.numeric_cols if self.df[col].nunique() <= 10
+        ]
+
+        # Include categorical cols
+        suitable_cols.extend(
+            [col for col in self.categorical_cols if self.df[col].nunique() <= 10]
+        )
+
+        print(f"Showing Count Plots for : {', '.join(suitable_cols)}")
+
+        for col in suitable_cols:
+            fig, ax = plt.subplots()
+
+            # Cast the entire column to string to prevent None/Bool sorting crashes
+            safe_series = self.df[col].astype(str)
+            pallete = sns.color_palette("rocket", n_colors=safe_series.nunique())
+            # Passing x and hue directly as series bypasses the need for the data argument
+            sns.countplot(
+                x=safe_series,
+                order=safe_series.value_counts().index,
+                ax=ax,
+                hue=safe_series,
+                legend=False,
+                palette=pallete,
+            )
+
+            # Show the count values on top of the bars
+            for p in ax.patches:
+                count = int(p.get_height())
+                ax.annotate(
+                    f"{count}",
+                    (p.get_x() + p.get_width() / 2, p.get_height()),
+                    ha="center",
+                    va="bottom",
+                    fontsize=10,
+                    fontweight="bold",
+                )
+
+            ax.set_title(f"Countplot: {col}")
+            ax.set_xlabel(col)
+            ax.set_ylabel("Count")
+            ax.tick_params(axis="x", rotation=35)
+
+            plt.tight_layout()
+            plt.show()
+
+    # =========================================================
     # BOXPLOTS
     # =========================================================
 
     def boxplots(self):
-        """Plots boxplots for each numerical column."""
+        """Plots box & whisker plots for each numerical column with statistical metrics in a legend text box."""
+        # we use a cardinality logic to find suitable columns for boxplots
+        suitable_cols = [
+            col for col in self.numeric_cols if self.df[col].nunique() > 10
+        ]
 
-        for col in self.numeric_cols:
-            
+        pprint(f"Showing Box Plots for : {', '.join(suitable_cols)}")
+
+        for col in suitable_cols:
+            # Drop missing values for clean statistical calculation
+            col_data = self.df[col].dropna()
+            if col_data.empty:
+                continue
+
             fig, ax = plt.subplots()
+            sns.boxplot(x=col_data, ax=ax)
 
-            sns.boxplot(x=self.df[col], ax=ax)
+            # Calculate key metrics
+            stats = col_data.describe()
+            q1 = stats["25%"]
+            median = stats["50%"]
+            q3 = stats["75%"]
 
+            # Calculate whiskers limits matching seaborn's default (IQR * 1.5)
+            iqr = q3 - q1
+            lower_whisker = col_data[col_data >= (q1 - 1.5 * iqr)].min()
+            upper_whisker = col_data[col_data <= (q3 + 1.5 * iqr)].max()
+
+            # Find the percentile of the upper whisker to show in the text box
+            upper_whisker_percentile = (
+                col_data[col_data <= upper_whisker].shape[0] / col_data.shape[0]
+            ) * 100
+
+            # num of outliers beyond the upper whisker
+            outliers_count = col_data[col_data > upper_whisker].shape[0]
+            outliers_percent = (outliers_count / col_data.shape[0]) * 100
+
+            # num of outliers beyond the lower whisker
+            lower_outliers_count = col_data[col_data < lower_whisker].shape[0]
+            lower_outliers_percent = (lower_outliers_count / col_data.shape[0]) * 100
+
+            # Format the metrics text block
+            stats_text = (
+                f"  Upper Whisker:  {upper_whisker:.2f} ({upper_whisker_percentile:.1f}th percentile)\n"
+                f"  Outliers beyond upper whisker: {outliers_count} ({outliers_percent:.2f}%)\n"
+                f"  Q3:   {q3:.2f}\n"
+                f"  Med:  {median:.2f}\n"
+                f"  Q1:   {q1:.2f}\n"
+                f"  Lower Whisker:  {lower_whisker:.2f}\n"
+                f"  Outliers below lower whisker: {lower_outliers_count} ({lower_outliers_percent:.2f}%)\n"
+            )
+
+            # Place the text box inside the plot using relative axes coordinates (0 to 1)
+            # loc="upper right" equivalent using transform=ax.transAxes
+            # use loc = "best"
+            ax.legend(
+                title="Statistical Summary",
+                labels=[stats_text],
+                loc="best",
+                fontsize=11,
+            )
+
+            """
+            ax.text(
+                x=0.95,
+                y=0.90,
+                s=stats_text,
+                transform=ax.transAxes,
+                fontsize=11,
+                fontfamily="monospace",  # Monospace ensures numbers line up perfectly
+                verticalalignment="top",
+                horizontalalignment="right",
+                bbox=dict(
+                    boxstyle="round,pad=0.5",
+                    facecolor="white",
+                    edgecolor="gray",
+                    alpha=0.8
+                ),
+            )
+            """
             ax.set_title(f"Boxplot: {col}")
             ax.set_xlabel(col)
+
             plt.tight_layout()
-
-            # need to write logic for showing key statistics like median, quartiles, and whiskers 
-            
-
-
             plt.show()
 
     # =========================================================
@@ -374,7 +518,6 @@ class EDAPipeline:
             if col == self.target:
                 continue
 
-           
             fig, ax = plt.subplots()
 
             sns.scatterplot(data=self.df, x=col, y=self.target, ax=ax)
@@ -406,7 +549,9 @@ class EDAPipeline:
 
         print("\n")
         print("=" * 80)
-        print(f"{ICON_CATEGORICAL_OVERVIEW} CARDINALITY REPORT {ICON_CATEGORICAL_OVERVIEW}")
+        print(
+            f"{ICON_CATEGORICAL_OVERVIEW} CARDINALITY REPORT {ICON_CATEGORICAL_OVERVIEW}"
+        )
         print("=" * 80)
         print(self.cardinality_report())
 
@@ -426,9 +571,11 @@ class EDAPipeline:
         print("=" * 80)
         print(f"{ICON_KEY_INSIGHTS} LOG TRANSFORM CANDIDATES {ICON_KEY_INSIGHTS}")
         print("Benefitial for :\n")
-        print("- Linear Regression, Ridge, Lasso, & ElasticNet ;\n " \
-        "- Logistic Regression & Support Vector Machines (SVM),\n " \
-        "- Neural Networks, KNN & K-Means")
+        print(
+            "- Linear Regression, Ridge, Lasso, & ElasticNet ;\n "
+            "- Logistic Regression & Support Vector Machines (SVM),\n "
+            "- Neural Networks, KNN & K-Means"
+        )
         print("=" * 80)
         print(self.log_transform_candidates())
 
@@ -438,29 +585,49 @@ class EDAPipeline:
 
         print("\n")
         print("=" * 80)
-        print(" "*20 + f"{ICON_CORRELATION_MATRIX} Showing correlation heatmap... " + " "*20 )
+        print(
+            " " * 20
+            + f"{ICON_CORRELATION_MATRIX} Showing Correlation Heatmap... "
+            + " " * 20
+        )
         print("=" * 80)
         self.correlation_heatmap()
 
         print("\n")
         print("=" * 80)
-        print(" "*20 + f"{ICON_BAR_CHART} Showing distribution plots... " + " "*20 )
+        print(" " * 20 + f"{ICON_BAR_CHART} Showing Distribution Plots... " + " " * 20)
         print("=" * 80)
         self.distribution_plots()
 
         print("\n")
+        print("=" * 80)
+        print(" " * 20 + f"{ICON_BAR_CHART} Showing Count Plots... " + " " * 20)
+        print("=" * 80)
+        self.countplots()
+
+        print("\n")
         print("-" * 80)
-        print(" "*20 + f"{ICON_BAR_CHART} Showing boxplots... " + " "*20 )
+        print(
+            " " * 20 + f"{ICON_BAR_CHART} Showing Box and Whisker Plots... " + " " * 20
+        )
         print("-" * 80)
         self.boxplots()
 
         print("\n")
         print("=" * 80)
-        print(" "*20 + f"{ICON_LINE_CHART} Showing target vs feature relationships... " + " "*20 )
+        print(
+            " " * 20
+            + f"{ICON_LINE_CHART} Showing Target vs Feature Relationships... "
+            + " " * 20
+        )
         print("=" * 80)
         self.target_relationships()
 
         print("\n")
         print("+" * 80)
-        print(" "*20 + f"{ICON_DONE} Task complete! All EDA steps have been executed." + " "*20)
+        print(
+            " " * 20
+            + f"{ICON_DONE} Task complete! All EDA steps have been executed."
+            + " " * 20
+        )
         print("+" * 80)
