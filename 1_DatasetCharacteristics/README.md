@@ -20,10 +20,10 @@
 
 ### Target Variable/Label
 - **Label Name:** avg
-- **Label Type:** [Regression]
+- **Label Type:** floating number.
 - **Label Description:** Average round-trip time (RTT) across all replies in milliseconds. 
-- **Label Values:** [For regression: range of values.]
-- **Label Distribution:** [Brief description of value distribution for regression]
+- **Label Values:** Showed in detail in the EDA notebook.
+- **Label Distribution:** Showed in detail in the EDA notebook.
 
 ### Feature Description
 
