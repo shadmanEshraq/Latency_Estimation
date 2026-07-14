@@ -14,10 +14,6 @@
 
 3. [Google Drive copy of the Dataset for easier asccess](https://drive.google.com/drive/folders/1H3eyh8CgYErbDcPGOH9lEslPub40fL9V?usp=sharing)
 
-🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
-  *WORK IN PROGRESS*
-🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
-
 ### Dataset Characteristics
 - **Number of Observations:** 1116767
 - **Number of Features:** 41
